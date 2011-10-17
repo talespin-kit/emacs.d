@@ -2,6 +2,7 @@
 ;;; if the operating system has no way to install org-mode through its package 
 ;;; management then download and point to that directory
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
+;; TODO-this statement loads a system wide org-install, remove it or make sure it is required.
 (require 'org-installl "" "ad")
 ;; all files ending with .org opens in org-mode as the major mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -12,7 +13,7 @@
 ;; ?? document 
 (transient-mark-mode 1)
 (setq org-default-notes-file (concat org-directory "/notes.org"))
-(setq org-agenda-files (list "~/org/programming.org" "~/org/office.org"))
+(setq org-agenda-files (list "~/org/coder.org" "~/org/office.org"))
 (setq org-todo-keywords (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)"))))
 (setq org-refile-targets (quote ((nil :level . 1)
 				 (org-agenda-files :level . 1))))
@@ -54,7 +55,7 @@
 ;; <f5> opens the home.org file
 (global-set-key (kbd "<f5>")
 		(lambda () (interactive)
-		  (find-file (concat (getenv "HOME") "/org/programming.org"))))
+		  (find-file (concat (getenv "HOME") "/org/coder.org"))))
 
 ;; <f6> opens the notes.org file
 (global-set-key (kbd "<f6>")
@@ -68,10 +69,10 @@
 		  (find-file (concat (getenv "HOME") "/org/doc.org"))))
 ;; custom agenda views
 (setq org-agenda-custom-commands
-     '(("p" "NEXT followed by TODO" ((alltodo
+     '(("c" "NEXT followed by TODO" ((alltodo
 				      ""
 				      ((org-agenda-sorting-strategy '(todo-state-down))
-				            (org-agenda-files (list (concat (getenv "HOME") "/org/programming.org")))))))
+				            (org-agenda-files (list (concat (getenv "HOME") "/org/coder.org")))))))
        ("o" "OFFICE TODO" ((alltodo
 			    ""
 			    ((org-agenda-sorting-strategy '(todo-state-down)) 
@@ -80,7 +81,7 @@
 ;; <f11> open programming agenda
 (global-set-key (kbd "<f11>")
 		(lambda () (interactive)
-		  (org-agenda "" "h" )))
+		  (org-agenda "" "c" )))
 ;; <f12> open office agenda
 (global-set-key (kbd "<f12>")
 		(lambda () (interactive)
