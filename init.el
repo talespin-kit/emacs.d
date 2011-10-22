@@ -9,14 +9,13 @@
 
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (setq org-agenda-files 
-      (list "~/org/coder.org" "~/org/office.org" "~/org/minor.org"))
+      '("~/org/coder.org" "~/org/office.org" "~/org/minor.org"))
 (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")))
 (setq org-refile-targets
       '((nil :level . 1) (org-agenda-files :level . 1)))
 (setq org-todo-keyword-faces
-      '(("TODO"  . org-warning)
-	("NEXT"  . (:foreground "blue" weight bold))))
+      '(("NEXT" . (:foreground "pink" :bold t))))
 ; TODO-do not use custom-set-variables whcih use gui
 ; org-mode buffer listing(C-cb) uses ido-mode
 (custom-set-variables
@@ -88,7 +87,7 @@
 
 
 
-;; emacs related
+; emacs related
 ;; session management
 (setq load-path (cons (concat (getenv "HOME") "/.emacs.d/") load-path))
 (autoload 'save-current-configuration "revive" "Save status" t)
@@ -112,3 +111,5 @@
 (show-paren-mode 1) ; show the matching parenthesis
 (global-visual-line-mode 1) ; ?
 ;; (mouse-avoidance-mode 'banish) ;move the cusor away to the end when typing
+;; by default C-x C-f shows in home directory
+(setq command-line-default-directory (getenv "HOME"))
