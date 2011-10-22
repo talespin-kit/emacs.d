@@ -15,7 +15,7 @@
 (setq org-refile-targets
       '((nil :level . 1) (org-agenda-files :level . 1)))
 (setq org-todo-keyword-faces
-      '(("NEXT" . (:foreground "pink" :bold t))))
+      '(("NEXT" . (:foreground "cyan" :weight bold))))
 ; TODO-do not use custom-set-variables whcih use gui
 ; org-mode buffer listing(C-cb) uses ido-mode
 (custom-set-variables
