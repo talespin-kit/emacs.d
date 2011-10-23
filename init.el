@@ -1,3 +1,29 @@
+; emacs related
+;; session management
+(setq load-path (cons (concat (getenv "HOME") "/.emacs.d/") load-path))
+(autoload 'save-current-configuration "revive" "Save status" t)
+(autoload 'resume "revive" "Resume Emacs" t)
+(autoload 'wipe "revive" "Wipe Emacs" t)
+;; ?? document 
+(transient-mark-mode 1)
+(require 'color-theme)
+(if (version<= emacs-version "23.1.1")
+    (setq color-theme-is-global t)
+  (color-theme-initialize))
+
+(color-theme-dark-laptop)
+(column-number-mode 1) ; show (line, col) in status bar(right term ?)
+(ido-mode t); switch buffers
+(show-paren-mode 1) ; show the matching parenthesis
+(global-visual-line-mode 1) ; ?
+;; (mouse-avoidance-mode 'banish) ;move the cusor away to the end when typing
+;; by default C-x C-f shows in home directory
+(setq command-line-default-directory (getenv "HOME"))
+(menu-bar-mode nil) ; hide the menu bar
+(set-scroll-bar-mode nil) ; hide the scroll bar
+(tool-bar-mode nil) ; hide the tool bar
+
+; org-mode settings
 (setq org-directory "~/org")
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
 ;; all files ending with .org opens in org-mode as the major mode
@@ -16,40 +42,22 @@
       '((nil :level . 1) (org-agenda-files :level . 1)))
 (setq org-todo-keyword-faces
       '(("NEXT" . (:foreground "cyan" :weight bold))))
-; TODO-do not use custom-set-variables whcih use gui
-; org-mode buffer listing(C-cb) uses ido-mode
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(menu-bar-mode t)
- '(org-completion-use-ido t)
- '(scroll-bar-mode nil)
- '(tool-bar-mode nil))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
-; TODO-i think no need of lambda, use ((find-file...)) form and test it.
+
+(setq org-completion-use-ido t)
+;; TODO-i think no need of lambda, use ((find-file...)) form and test it.
 ;; any ways i guess (interactive) is not required.
 ;; <f4> opens the office.org file
 (global-set-key (kbd "<f4>")
 		(lambda () (interactive)
 		  (find-file (concat (getenv "HOME") "/org/office.org"))))
-
 ;; <f5> opens the home.org file
 (global-set-key (kbd "<f5>")
 		(lambda () (interactive)
 		  (find-file (concat (getenv "HOME") "/org/coder.org"))))
-
 ;; <f6> opens the notes.org file
 (global-set-key (kbd "<f6>")
 		(lambda () (interactive)
 		  (find-file (concat (getenv "HOME") "/org/notes.org"))))
-
 ;; <f7> opens the notes.org file
 (global-set-key (kbd "<f7>")
 		(lambda () (interactive)
@@ -85,31 +93,3 @@
       (if (not org-timer-current-timer)
       (org-timer-set-timer '(16)))))
 
-
-
-; emacs related
-;; session management
-(setq load-path (cons (concat (getenv "HOME") "/.emacs.d/") load-path))
-(autoload 'save-current-configuration "revive" "Save status" t)
-(autoload 'resume "revive" "Resume Emacs" t)
-(autoload 'wipe "revive" "Wipe Emacs" t)
-
-
-;; ?? document 
-(transient-mark-mode 1)
-
-
-(require 'color-theme)
-(if (version<= emacs-version "23.1.1")
-    (setq color-theme-is-global t)
-  (color-theme-initialize))
-
-(color-theme-dark-laptop)
-
-(column-number-mode 1) ; show (line, col) in status bar(right term ?)
-(ido-mode t); switch buffers
-(show-paren-mode 1) ; show the matching parenthesis
-(global-visual-line-mode 1) ; ?
-;; (mouse-avoidance-mode 'banish) ;move the cusor away to the end when typing
-;; by default C-x C-f shows in home directory
-(setq command-line-default-directory (getenv "HOME"))
