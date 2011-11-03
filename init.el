@@ -11,20 +11,18 @@
 (add-hook 'emacs-startup-hook
 	  '(lambda()
 	     (resume 1))) ; resume while opening
-(add-hook 'before-save-hook 'delete-trailing-whitespace) ;; delete trailing white-spaces before saving
-(transient-mark-mode t) ;; highlight the region when the mark is active
-(require 'color-theme) ;; color theme
+(add-hook 'before-save-hook 'delete-trailing-whitespace) ;delete trailing white-spaces before saving
+(transient-mark-mode t) ; highlight the region when the mark is active
+(require 'color-theme) ; color theme
 (if (version<= emacs-version "23.1.1")
     (setq color-theme-is-global t)
   (color-theme-initialize))
 (color-theme-dark-laptop)
-(column-number-mode 1) ;; show (line, col) in status bar(right term ?)
-(ido-mode t) ;; ?? document
-(show-paren-mode 1) ;; show the matching parenthesis
-(global-visual-line-mode 1) ; ?
-;; (mouse-avoidance-mode 'banish) ;move the cusor away to the end when typing
-;; by default C-x C-f shows in home directory
-(setq command-line-default-directory (getenv "HOME"))
+(column-number-mode 1) ; show (line, col) in status bar(right term ?)
+(ido-mode t) ; file name and buffer completion
+(show-paren-mode t) ; show the matching parenthesis
+(mouse-avoidance-mode 'exile) ; move the mouse cusor to the corner as you type and get back when done.
+(setq command-line-default-directory (getenv "HOME")) ; by default C-x C-f shows in home directory
 (menu-bar-mode nil) ; hide the menu bar
 (set-scroll-bar-mode nil) ; hide the scroll bar
 (tool-bar-mode nil) ; hide the tool bar
