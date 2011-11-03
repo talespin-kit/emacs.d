@@ -4,17 +4,23 @@
 (autoload 'save-current-configuration "revive" "Save status" t)
 (autoload 'resume "revive" "Resume Emacs" t)
 (autoload 'wipe "revive" "Wipe Emacs" t)
-;; ?? document 
-(transient-mark-mode 1)
-(require 'color-theme)
+(add-hook 'kill-emacs-hook ; save when closing
+	  '(lambda ()
+	     (save-current-configuration 1)))
+(setq inhibit-startup-screen t) ; hide the splashscreen in order for the resume to work
+(add-hook 'emacs-startup-hook
+	  '(lambda()
+	     (resume 1))) ; resume while opening
+(add-hook 'before-save-hook 'delete-trailing-whitespace) ;; delete trailing white-spaces before saving
+(transient-mark-mode t) ;; highlight the region when the mark is active
+(require 'color-theme) ;; color theme
 (if (version<= emacs-version "23.1.1")
     (setq color-theme-is-global t)
   (color-theme-initialize))
-
 (color-theme-dark-laptop)
-(column-number-mode 1) ; show (line, col) in status bar(right term ?)
-(ido-mode t); switch buffers
-(show-paren-mode 1) ; show the matching parenthesis
+(column-number-mode 1) ;; show (line, col) in status bar(right term ?)
+(ido-mode t) ;; ?? document
+(show-paren-mode 1) ;; show the matching parenthesis
 (global-visual-line-mode 1) ; ?
 ;; (mouse-avoidance-mode 'banish) ;move the cusor away to the end when typing
 ;; by default C-x C-f shows in home directory
@@ -34,7 +40,7 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 
 (setq org-default-notes-file (concat org-directory "/notes.org"))
-(setq org-agenda-files 
+(setq org-agenda-files
       '("~/org/coder.org" "~/org/office.org" "~/org/minor.org"))
 (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")))
@@ -71,7 +77,7 @@
 				            (org-agenda-files (list (concat (getenv "HOME") "/org/coder.org")))))))
        ("o" "OFFICE TODO" ((alltodo
 			    ""
-			    ((org-agenda-sorting-strategy '(todo-state-down)) 
+			    ((org-agenda-sorting-strategy '(todo-state-down))
 			     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
      ))
 ;; <f11> open programming agenda
@@ -82,14 +88,14 @@
 (global-set-key (kbd "<f12>")
 		(lambda () (interactive)
 		  (org-agenda "" "o" )))
-;; pomodoro 
+;; pomodoro
 (defun my-after-load-org ()
   (add-to-list 'org-modules 'org-timer))
 
 (eval-after-load "org" '(my-after-load-org))
 
 (setq org-timer-default-timer 25)
-(add-hook 'org-clock-in-hook '(lambda () 
+(add-hook 'org-clock-in-hook '(lambda ()
       (if (not org-timer-current-timer)
       (org-timer-set-timer '(16)))))
 
