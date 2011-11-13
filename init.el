@@ -28,6 +28,7 @@
 (tool-bar-mode nil) ; hide the tool bar
 
 ; org-mode settings
+; TODO-line by line test and document
 (setq org-directory "~/org")
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
 ;; all files ending with .org opens in org-mode as the major mode
@@ -78,11 +79,11 @@
 			    ((org-agenda-sorting-strategy '(todo-state-down))
 			     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
      ))
-;; <f11> open programming agenda
+;;; <f11> open programming agenda
 (global-set-key (kbd "<f11>")
 		(lambda () (interactive)
 		  (org-agenda "" "c" )))
-;; <f12> open office agenda
+;;; <f12> open office agenda
 (global-set-key (kbd "<f12>")
 		(lambda () (interactive)
 		  (org-agenda "" "o" )))
@@ -96,4 +97,3 @@
 (add-hook 'org-clock-in-hook '(lambda ()
       (if (not org-timer-current-timer)
       (org-timer-set-timer '(16)))))
-
