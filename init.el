@@ -42,13 +42,14 @@
 (setq org-agenda-files
       '("~/org/coder.org" "~/org/office.org" "~/org/minor.org"))
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")))
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "CANCELED(c@!)")))
+
 (setq org-refile-targets
       '((nil :level . 1) (org-agenda-files :level . 1)))
 (setq org-todo-keyword-faces
       '(("NEXT" . (:foreground "cyan" :weight bold))))
 
-(setq org-completion-use-ido t)
+(setq org-completion-use-iswitchb t)
 ;; TODO-i think no need of lambda, use ((find-file...)) form and test it.
 ;; any ways i guess (interactive) is not required.
 ;; <f4> opens the office.org file
