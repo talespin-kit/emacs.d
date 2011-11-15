@@ -50,6 +50,7 @@
       '(("NEXT" . (:foreground "cyan" :weight bold))))
 
 (setq org-completion-use-iswitchb t)
+(setq org-speed-commmands-user t)
 ;; TODO-i think no need of lambda, use ((find-file...)) form and test it.
 ;; any ways i guess (interactive) is not required.
 ;; <f4> opens the office.org file
