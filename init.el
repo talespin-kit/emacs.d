@@ -49,8 +49,8 @@
 (setq org-todo-keyword-faces
       '(("NEXT" . (:foreground "cyan" :weight bold))))
 
-(setq org-completion-use-iswitchb t)
-(setq org-speed-commmands-user t)
+(setq org-completion-use-ido t)
+(setq org-use-speed-commands t)
 ;; TODO-i think no need of lambda, use ((find-file...)) form and test it.
 ;; any ways i guess (interactive) is not required.
 ;; <f4> opens the office.org file
