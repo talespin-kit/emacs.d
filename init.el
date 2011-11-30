@@ -81,7 +81,12 @@
 			    ""
 			    ((org-agenda-sorting-strategy '(todo-state-down))
 			     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
-     ))
+       ("w" "DAY AGENDA" ((agenda "" ((org-agenda-ndays 1)))
+			  (todo "" ((org-agenda-sorting-strategy '(todo-state-down)) ;; TODO-use (tags-todo) and filter "TODO and NEXT" states
+				    (org-agenda-todo-ignore-scheduled 'all)
+				    (org-agenda-todo-ignore-deadlines 'future)
+				    ))))
+       ))
 ;;; <f11> open programming agenda
 (global-set-key (kbd "<f11>")
 		(lambda () (interactive)
