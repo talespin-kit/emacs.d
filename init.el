@@ -1,5 +1,5 @@
 ; emacs related
-;; session management
+
 (setq load-path (cons (concat (getenv "HOME") "/.emacs.d/") load-path))
 (autoload 'save-current-configuration "revive" "Save status" t)
 (autoload 'resume "revive" "Resume Emacs" t)
@@ -31,6 +31,7 @@
 ; TODO-line by line test and document
 (setq org-directory "~/org")
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
+(require 'org-install) ; have effect on all variables -see faq - http://orgmode.org/worg/org-faq.html
 ;; all files ending with .org opens in org-mode as the major mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
