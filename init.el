@@ -1,5 +1,4 @@
 ; emacs related
-
 (setq load-path (cons (concat (getenv "HOME") "/.emacs.d/") load-path))
 (autoload 'save-current-configuration "revive" "Save status" t)
 (autoload 'resume "revive" "Resume Emacs" t)
@@ -94,7 +93,7 @@
 ;;; <f12> open office agenda
 (global-set-key (kbd "<f12>")
 		(lambda () (interactive)
-		  (org-agenda "" "o" )))
+		  (org-agenda "" "w" )))
 ;; pomodoro
 (defun my-after-load-org ()
   (add-to-list 'org-modules 'org-timer))
