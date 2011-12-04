@@ -104,3 +104,23 @@
 (add-hook 'org-clock-in-hook '(lambda ()
       (if (not org-timer-current-timer)
       (org-timer-set-timer '(16)))))
+
+((lambda ()
+   (defun print-line ()
+     (print (buffer-substring-no-properties (point-at-bol) (point-at-eol)) (get-buffer "*scratch*")))
+   (defun my-org-archive-done-tasks ()
+     (interactive)
+     (save-current-buffer (set-buffer (get-buffer "*scratch*")) (erase-buffer))
+					;(org-map-entries 'org-archive-subtree)
+     (org-map-entries 'print-line "" (list "/home/tieto/org/office.org"))
+     (print "hello"))
+   (my-org-archive-done-tasks)))
+
+
+(buffer-substring-no-properties 1 9)
+
+(setq hh 5)
+((lambda ()
+   (let ((hh 6))
+     (print hh))))
+(print hh)
