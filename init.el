@@ -3,13 +3,9 @@
 (autoload 'save-current-configuration "revive" "Save status" t)
 (autoload 'resume "revive" "Resume Emacs" t)
 (autoload 'wipe "revive" "Wipe Emacs" t)
-(add-hook 'kill-emacs-hook ; save when closing
-	  '(lambda ()
-	     (save-current-configuration 1)))
+(add-hook 'kill-emacs-hook '(lambda () (save-current-configuration 1))) ; save when closing
 (setq inhibit-startup-screen t) ; hide the splashscreen in order for the resume to work
-(add-hook 'emacs-startup-hook
-	  '(lambda()
-	     (resume 1))) ; resume while opening
+(add-hook 'emacs-startup-hook '(lambda() (resume 1))) ; resume while opening
 (add-hook 'before-save-hook 'delete-trailing-whitespace) ;delete trailing white-spaces before saving
 (transient-mark-mode t) ; highlight the region when the mark is active
 (require 'color-theme) ; color theme
@@ -22,7 +18,7 @@
 (show-paren-mode t) ; show the matching parenthesis
 (mouse-avoidance-mode 'exile) ; move the mouse cusor to the corner as you type and get back when done.
 (setq command-line-default-directory (getenv "HOME")) ; by default C-x C-f shows in home directory
-(menu-bar-mode nil) ; hide the menu bar
+;(menu-bar-mode nil) ; hide the menu bar
 (set-scroll-bar-mode nil) ; hide the scroll bar
 (tool-bar-mode nil) ; hide the tool bar
 
@@ -105,22 +101,23 @@
       (if (not org-timer-current-timer)
       (org-timer-set-timer '(16)))))
 
-((lambda ()
-   (defun print-line ()
-     (print (buffer-substring-no-properties (point-at-bol) (point-at-eol)) (get-buffer "*scratch*")))
-   (defun my-org-archive-done-tasks ()
-     (interactive)
-     (save-current-buffer (set-buffer (get-buffer "*scratch*")) (erase-buffer))
-					;(org-map-entries 'org-archive-subtree)
-     (org-map-entries 'print-line "" (list "/home/tieto/org/office.org"))
-     (print "hello"))
-   (my-org-archive-done-tasks)))
+; (setq revert-without-query t) TODO commit in original repo
 
+(defun my-org-archive-subtree ()
+  (if (string-match "^\*.* DONE" (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
+      (setq org-map-continue-from (point-at-bol))
+    (setq org-map-continue-from nil)
+    )
+  (org-archive-subtree))
 
-(buffer-substring-no-properties 1 9)
+(defun my-org-archive-done-tasks ()
+  (interactive)
+  (find-file  "/home/tieto/org/office.org")
+  (save-current-buffer (set-buffer (get-buffer "office.org")) (revert-buffer nil 'NOCONFIRM))
+  (org-map-entries 'my-org-archive-subtree "/DONE" (list "/home/tieto/org/office.org")))
 
-(setq hh 5)
-((lambda ()
-   (let ((hh 6))
-     (print hh))))
-(print hh)
+(setq special-display-buffer-names '("init.el"))
+;(setq debug-on-quit t)
+;(setq edebug-on-quit t)
+(my-org-archive-done-tasks)
+
