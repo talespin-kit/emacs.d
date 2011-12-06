@@ -104,11 +104,9 @@
 ; (setq revert-without-query t) TODO commit in original repo
 
 (defun my-org-archive-subtree ()
-  (if (string-match "^\*.* DONE" (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
-      (setq org-map-continue-from (point-at-bol))
-    (setq org-map-continue-from nil)
-    )
-  (org-archive-subtree))
+  (org-archive-subtree)
+  (setq org-map-continue-from (point-at-bol))
+  )
 
 (defun my-org-archive-done-tasks ()
   (interactive)
@@ -116,7 +114,8 @@
   (save-current-buffer (set-buffer (get-buffer "office.org")) (revert-buffer nil 'NOCONFIRM))
   (org-map-entries 'my-org-archive-subtree "/DONE" (list "/home/tieto/org/office.org")))
 
-(setq special-display-buffer-names '("init.el"))
+;(setq special-display-buffer-names '("init.el"))
+;(setq same-window-buffer-names '("init.el"))
 ;(setq debug-on-quit t)
 ;(setq edebug-on-quit t)
 (my-org-archive-done-tasks)
