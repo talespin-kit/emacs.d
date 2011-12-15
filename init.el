@@ -67,12 +67,10 @@
 (eval-after-load "org" '(my-after-load-org))
 (setq org-timer-default-timer 25)
 (add-hook 'org-clock-in-hook '(lambda () (if (not org-timer-current-timer) (org-timer-set-timer '(16)))))
-
-(defun my-org-archive-subtree () (setq org-map-continue-from (point-at-bol)) (org-archive-subtree))
-(defun my-org-archive-done-tasks ()
+;; archive the DONE tasks
+(defun my-org-archive-done-tasks () ; archive the current buffer include CANCELLED state also
   (interactive)
-  (find-file  "/home/tieto/org/office.org")
-  (save-current-buffer (set-buffer (get-buffer "office.org")) (revert-buffer nil 'NOCONFIRM))
-  (org-map-entries 'my-org-archive-subtree "/DONE" org-agenda-files))
-;(setq edebug-on-quit t)
-(my-org-archive-done-tasks)
+  (org-map-entries '(lambda ()
+		      (setq org-map-continue-from (point-at-bol))
+		      (org-archive-subtree))
+		   "/DONE" (org-agenda-files)))
