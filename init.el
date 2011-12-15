@@ -21,12 +21,12 @@
 ;(menu-bar-mode nil) ; hide the menu bar
 (set-scroll-bar-mode nil) ; hide the scroll bar
 (tool-bar-mode nil) ; hide the tool bar
-
+(setq revert-without-query t)
 ; org-mode settings
 (setq org-directory "~/org")
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
 (require 'org-install) ; ensures effect on all variables - explained in faq - http://orgmode.org/worg/org-faq.html
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode));; all files ending with .org opens in org-mode as the major mode
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode)) ;; all files ending with .org opens in org-mode as the major mode
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -38,80 +38,41 @@
 (setq org-todo-keyword-faces '(("NEXT" . (:foreground "cyan" :weight bold))))
 (setq org-completion-use-ido t)
 (setq org-use-speed-commands t)
-; TODO-line by line test and document from here
-
-;; TODO-i think no need of lambda, use ((find-file...)) form and test it.
-;; any ways i guess (interactive) is not required.
-;; <f4> opens the office.org file
-(global-set-key (kbd "<f4>")
-		(lambda () (interactive)
-		  (find-file (concat (getenv "HOME") "/org/office.org"))))
-;; <f5> opens the home.org file
-(global-set-key (kbd "<f5>")
-		(lambda () (interactive)
-		  (find-file (concat (getenv "HOME") "/org/coder.org"))))
-;; <f6> opens the notes.org file
-(global-set-key (kbd "<f6>")
-		(lambda () (interactive)
-		  (find-file (concat (getenv "HOME") "/org/notes.org"))))
-;; <f7> opens the notes.org file
-(global-set-key (kbd "<f7>")
-		(lambda () (interactive)
-		  (split-window-horizontally)
-		  (find-file (concat (getenv "HOME") "/org/doc.org"))))
+(global-set-key (kbd "<f4>") (lambda () (interactive) (find-file (concat (getenv "HOME") "/org/office.org"))))
+(global-set-key (kbd "<f5>") (lambda () (interactive) (find-file (concat (getenv "HOME") "/org/coder.org"))))
+(global-set-key (kbd "<f6>") (lambda () (interactive) (find-file (concat (getenv "HOME") "/org/notes.org"))))
+(global-set-key (kbd "<f7>") (lambda () (interactive) (split-window-horizontally)
+			       (find-file (concat (getenv "HOME") "/org/doc.org"))))
 ;; custom agenda views
 (setq org-agenda-custom-commands
-     '(("c" "NEXT followed by TODO" ((alltodo
-				      ""
-				      ((org-agenda-sorting-strategy '(todo-state-down))
-				            (org-agenda-files (list (concat (getenv "HOME") "/org/coder.org")))))))
-       ("o" "OFFICE TODO" ((alltodo
-			    ""
-			    ((org-agenda-sorting-strategy '(todo-state-down))
-			     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
-       ("w" "DAY AGENDA" ((agenda "" ((org-agenda-ndays 1)))
-			  (todo "" ((org-agenda-sorting-strategy '(todo-state-down)) ;; TODO-use (tags-todo) and filter "TODO and NEXT" states
-				    (org-agenda-todo-ignore-scheduled 'all)
-				    (org-agenda-todo-ignore-deadlines 'future)
-				    ))))
-       ))
-;;; <f11> open programming agenda
-(global-set-key (kbd "<f11>")
-		(lambda () (interactive)
-		  (org-agenda "" "c" )))
-;;; <f12> open office agenda
-(global-set-key (kbd "<f12>")
-		(lambda () (interactive)
-		  (org-agenda "" "w" )))
+     '(("c" "NEXT followed by TODO"
+	((alltodo
+	  ""
+	  ((org-agenda-sorting-strategy '(todo-state-down))
+	   (org-agenda-files (list (concat (getenv "HOME") "/org/coder.org")))))))
+       ("o" "OFFICE TODO"
+	((alltodo
+	  ""
+	  ((org-agenda-sorting-strategy '(todo-state-down))
+	   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
+       ("w" "DAY AGENDA"
+	((agenda "" ((org-agenda-ndays 1)))
+	 (todo "" ((org-agenda-sorting-strategy '(todo-state-down)) ;; TODO-use (tags-todo) and filter "TODO and NEXT" states
+		   (org-agenda-todo-ignore-scheduled 'all)
+		   (org-agenda-todo-ignore-deadlines 'future)))))))
+(global-set-key (kbd "<f11>") (lambda () (interactive) (org-agenda "" "c" )))
+(global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda "" "w" )))
 ;; pomodoro
-
-(defun my-after-load-org ()
-  (add-to-list 'org-modules 'org-timer))
-
+(defun my-after-load-org () (add-to-list 'org-modules 'org-timer))
 (eval-after-load "org" '(my-after-load-org))
-
 (setq org-timer-default-timer 25)
-(add-hook 'org-clock-in-hook '(lambda ()
-      (if (not org-timer-current-timer)
-      (org-timer-set-timer '(16)))))
+(add-hook 'org-clock-in-hook '(lambda () (if (not org-timer-current-timer) (org-timer-set-timer '(16)))))
 
-; (setq revert-without-query t) TODO commit in original repo
-
-(defun my-org-archive-subtree ()
-  (setq org-map-continue-from (point-at-bol))
-  (org-archive-subtree))
-
-  ;(print (buffer-substring-no-properties (point-at-bol) (point-at-eol)) (get-buffer "*scratch*")))
-
+(defun my-org-archive-subtree () (setq org-map-continue-from (point-at-bol)) (org-archive-subtree))
 (defun my-org-archive-done-tasks ()
   (interactive)
   (find-file  "/home/tieto/org/office.org")
   (save-current-buffer (set-buffer (get-buffer "office.org")) (revert-buffer nil 'NOCONFIRM))
-  (org-map-entries 'my-org-archive-subtree "/DONE" (list "/home/tieto/org/office.org")))
-
-
-;(setq special-display-buffer-names '("init.el"))
-;(setq same-window-buffer-names '("init.el"))
-;(setq debug-on-quit t)
+  (org-map-entries 'my-org-archive-subtree "/DONE" org-agenda-files))
 ;(setq edebug-on-quit t)
 (my-org-archive-done-tasks)
