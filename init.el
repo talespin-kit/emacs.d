@@ -23,30 +23,23 @@
 (tool-bar-mode nil) ; hide the tool bar
 
 ; org-mode settings
-; TODO-line by line test and document
 (setq org-directory "~/org")
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
-(require 'org-install) ; have effect on all variables -see faq - http://orgmode.org/worg/org-faq.html
-;; all files ending with .org opens in org-mode as the major mode
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(require 'org-install) ; ensures effect on all variables - explained in faq - http://orgmode.org/worg/org-faq.html
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode));; all files ending with .org opens in org-mode as the major mode
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
-
 (setq org-default-notes-file (concat org-directory "/notes.org"))
-(setq org-agenda-files
-      '("~/org/coder.org" "~/org/office.org" "~/org/minor.org"))
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "CANCELED(c@!)")))
-
-(setq org-refile-targets
-      '((nil :level . 1) (org-agenda-files :level . 1)))
-(setq org-todo-keyword-faces
-      '(("NEXT" . (:foreground "cyan" :weight bold))))
-
+(setq org-agenda-files '("~/org/coder.org" "~/org/office.org" "~/org/minor.org"))
+(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "CANCELED(c@!)")))
+(setq org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1)))
+(setq org-todo-keyword-faces '(("NEXT" . (:foreground "cyan" :weight bold))))
 (setq org-completion-use-ido t)
 (setq org-use-speed-commands t)
+; TODO-line by line test and document from here
+
 ;; TODO-i think no need of lambda, use ((find-file...)) form and test it.
 ;; any ways i guess (interactive) is not required.
 ;; <f4> opens the office.org file
@@ -91,6 +84,7 @@
 		(lambda () (interactive)
 		  (org-agenda "" "w" )))
 ;; pomodoro
+
 (defun my-after-load-org ()
   (add-to-list 'org-modules 'org-timer))
 
@@ -104,9 +98,10 @@
 ; (setq revert-without-query t) TODO commit in original repo
 
 (defun my-org-archive-subtree ()
-  (org-archive-subtree)
   (setq org-map-continue-from (point-at-bol))
-  )
+  (org-archive-subtree))
+
+  ;(print (buffer-substring-no-properties (point-at-bol) (point-at-eol)) (get-buffer "*scratch*")))
 
 (defun my-org-archive-done-tasks ()
   (interactive)
@@ -114,9 +109,9 @@
   (save-current-buffer (set-buffer (get-buffer "office.org")) (revert-buffer nil 'NOCONFIRM))
   (org-map-entries 'my-org-archive-subtree "/DONE" (list "/home/tieto/org/office.org")))
 
+
 ;(setq special-display-buffer-names '("init.el"))
 ;(setq same-window-buffer-names '("init.el"))
 ;(setq debug-on-quit t)
 ;(setq edebug-on-quit t)
 (my-org-archive-done-tasks)
-
