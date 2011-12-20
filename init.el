@@ -68,7 +68,8 @@
 (setq org-timer-default-timer 25)
 (add-hook 'org-clock-in-hook '(lambda () (if (not org-timer-current-timer) (org-timer-set-timer '(16)))))
 ;; archive the DONE tasks
-(defun my-org-archive-done-tasks () ; archive the current buffer include CANCELLED state also
+;;; TODO-take the file name as arg to archive, if not org-agenda-files, also  include CANCELLED state for archiving
+(defun my-org-archive-done-tasks ()
   (interactive)
   (org-map-entries '(lambda ()
 		      (setq org-map-continue-from (point-at-bol))
