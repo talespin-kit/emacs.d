@@ -79,4 +79,4 @@
   (org-map-entries '(lambda ()
 		      (setq org-map-continue-from (point-at-bol))
 		      (org-archive-subtree))
-		   "/DONE" (org-agenda-files)))
+		   "TODO=\"CANCELED\"|TODO=\"DONE\"" (org-agenda-files)))
