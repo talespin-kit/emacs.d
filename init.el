@@ -21,7 +21,7 @@
 ;(menu-bar-mode nil) ; hide the menu bar
 (set-scroll-bar-mode nil) ; hide the scroll bar
 (tool-bar-mode nil) ; hide the tool bar
-(setq revert-without-query t)
+; (setq revert-without-query t); TODO-takes regular expression not "t", verify
 ; org-mode settings
 (setq org-directory "~/org")
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
