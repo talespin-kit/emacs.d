@@ -55,11 +55,15 @@
 	  ""
 	  ((org-agenda-sorting-strategy '(todo-state-down))
 	   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
+;;; TODO-use org-agenda-skip-function to display all the scheduled tasks which are not present in the org-agenda-ndays
+;;;
        ("w" "DAY AGENDA"
-	((agenda "" ((org-agenda-ndays 1)))
-	 (todo "" ((org-agenda-sorting-strategy '(todo-state-down)) ;; TODO-use (tags-todo) and filter "TODO and NEXT" states
-		   (org-agenda-todo-ignore-scheduled 'all)
-		   (org-agenda-todo-ignore-deadlines 'future)))))))
+	((agenda "" ((org-agenda-ndays 1)
+		     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))
+	 (todo "" ((org-agenda-sorting-strategy '(todo-state-down))
+		   (org-agenda-todo-ignore-scheduled 'past); past days and todays schedule is shown in (agenda) block
+		   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))))
+
 (global-set-key (kbd "<f11>") (lambda () (interactive) (org-agenda "" "c" )))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda "" "w" )))
 ;; pomodoro
