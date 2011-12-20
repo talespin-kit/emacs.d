@@ -55,8 +55,9 @@
 	  ""
 	  ((org-agenda-sorting-strategy '(todo-state-down))
 	   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
-;;; TODO-use org-agenda-skip-function to display all the scheduled tasks which are not present in the org-agenda-ndays
-;;;
+;;; 1 - show what has to be done today followed by
+;;; 2 - next tasks, since past scheduled tasks are shown in agenda(1), show future scheduled only
+;;;   - TODO - same to should be applied to dead line also
        ("w" "DAY AGENDA"
 	((agenda "" ((org-agenda-ndays 1)
 		     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))
