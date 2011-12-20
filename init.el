@@ -34,7 +34,7 @@
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 (setq org-agenda-files '("~/org/coder.org" "~/org/office.org" "~/org/minor.org"))
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "CANCELED(c@!)")))
-(setq org-refile-targets '((nil :level . 1) (org-agenda-files :level . 1)))
+(setq org-refile-targets '((nil :level . 1) (org-agenda-files :level . 2))) ; TODO-understand how it works
 (setq org-todo-keyword-faces '(("NEXT" . (:foreground "cyan" :weight bold))))
 (setq org-completion-use-ido t)
 (setq org-use-speed-commands t)
