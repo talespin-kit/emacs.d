@@ -55,15 +55,18 @@
 	  ""
 	  ((org-agenda-sorting-strategy '(todo-state-down))
 	   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
-;;; 1 - show what has to be done today followed by
-;;; 2 - next tasks, since past scheduled tasks are shown in agenda(1), show future scheduled only
-;;;   - TODO - same to should be applied to dead line also
+;;; 1 - show what has to be done today(scheduled) followed by
+;;; 2 - unscheduled tasks, followed by
+;;; 3 - future scheduled tasks
+;;;   - TODO - scheduling settings should be applied to dead line also
        ("w" "DAY AGENDA"
 	((agenda "" ((org-agenda-ndays 1)
 		     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))
 	 (todo "" ((org-agenda-sorting-strategy '(todo-state-down))
-		   (org-agenda-todo-ignore-scheduled 'past); past days and todays schedule is shown in (agenda) block
-		   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))))
+		   (org-agenda-todo-ignore-scheduled 'all); past days and todays schedule is shown in (agenda) block
+		   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))
+	 (tags "SCHEDULED>\"<+1d>\"" ""
+	       (org-agenda-files (list (concat (getenv "HOME") "/org/office.org"))))))))
 
 (global-set-key (kbd "<f11>") (lambda () (interactive) (org-agenda "" "c" )))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda "" "w" )))
