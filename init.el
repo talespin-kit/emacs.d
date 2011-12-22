@@ -44,8 +44,18 @@
 (global-set-key (kbd "<f7>") (lambda () (interactive) (split-window-horizontally)
 			       (find-file (concat (getenv "HOME") "/org/doc.org"))))
 ;; custom agenda views
+(defun my-custom-agenda-layout (key file)
+  `(,key "DAY AGENDA"
+	 ((agenda "" ((org-agenda-ndays 1)
+		      (org-agenda-files file)))
+	  (todo "" ((org-agenda-sorting-strategy '(todo-state-down))
+		    (org-agenda-todo-ignore-scheduled 'all); past days and todays schedule is shown in (agenda) block
+		    (org-agenda-files file)))
+	  (tags "SCHEDULED>\"<+1d>\"" ""
+		(org-agenda-files file)))))
+
 (setq org-agenda-custom-commands
-     '(("c" "NEXT followed by TODO"
+     `(("d" "NEXT followed by TODO"
 	((alltodo
 	  ""
 	  ((org-agenda-sorting-strategy '(todo-state-down))
@@ -54,19 +64,14 @@
 	((alltodo
 	  ""
 	  ((org-agenda-sorting-strategy '(todo-state-down))
-	   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))))
+	   (org-agenda-files file)))))
 ;;; 1 - show what has to be done today(scheduled) followed by
 ;;; 2 - unscheduled tasks, followed by
 ;;; 3 - future scheduled tasks
 ;;;   - TODO - scheduling settings should be applied to dead line also
-       ("w" "DAY AGENDA"
-	((agenda "" ((org-agenda-ndays 1)
-		     (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))
-	 (todo "" ((org-agenda-sorting-strategy '(todo-state-down))
-		   (org-agenda-todo-ignore-scheduled 'all); past days and todays schedule is shown in (agenda) block
-		   (org-agenda-files (list (concat (getenv "HOME") "/org/office.org")))))
-	 (tags "SCHEDULED>\"<+1d>\"" ""
-	       (org-agenda-files (list (concat (getenv "HOME") "/org/office.org"))))))))
+       ,(my-custom-agenda-layout "w" (list (concat (getenv "HOME") "/org/office.org")))
+       ,(my-custom-agenda-layout "c" (list (concat (getenv "HOME") "/org/coder.org")))
+))
 
 (global-set-key (kbd "<f11>") (lambda () (interactive) (org-agenda "" "c" )))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda "" "w" )))
