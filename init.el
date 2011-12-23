@@ -27,6 +27,7 @@
 (setq load-path (cons (concat org-directory "/org-mode/lisp") load-path))
 (require 'org-install) ; ensures effect on all variables - explained in faq - http://orgmode.org/worg/org-faq.html
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode)) ;; all files ending with .org opens in org-mode as the major mode
+(setq org-hide-leading-stars t) ; clean view
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
