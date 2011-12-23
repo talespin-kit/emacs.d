@@ -56,8 +56,7 @@
 	  (todo "" ((org-agenda-sorting-strategy '(todo-state-down))
 		    (org-agenda-todo-ignore-scheduled 'all); already shown in agenda
 		    (org-agenda-files (list ,file))))
-	  (tags "SCHEDULED>\"<+1d>\"" ""
-		(org-agenda-files (list ,file))))))
+	  (tags "SCHEDULED>\"<+1d>\"" ((org-agenda-files '(,file))) ""))))
 
 (setq org-agenda-custom-commands
       `(,(my-custom-agenda-layout "w" (concat (getenv "HOME") "/org/office.org"))
