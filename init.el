@@ -44,34 +44,24 @@
 (global-set-key (kbd "<f7>") (lambda () (interactive) (split-window-horizontally)
 			       (find-file (concat (getenv "HOME") "/org/doc.org"))))
 ;; custom agenda views
+;;; the return value of this fn is to setq org-agenda-custom-commands variable
 (defun my-custom-agenda-layout (key file)
-  `(,key "DAY AGENDA"
-	 ((agenda "" ((org-agenda-ndays 1)
-		      (org-agenda-files file)))
-	  (todo "" ((org-agenda-sorting-strategy '(todo-state-down))
-		    (org-agenda-todo-ignore-scheduled 'all); past days and todays schedule is shown in (agenda) block
-		    (org-agenda-files file)))
-	  (tags "SCHEDULED>\"<+1d>\"" ""
-		(org-agenda-files file)))))
-
-(setq org-agenda-custom-commands
-     `(("d" "NEXT followed by TODO"
-	((alltodo
-	  ""
-	  ((org-agenda-sorting-strategy '(todo-state-down))
-	   (org-agenda-files (list (concat (getenv "HOME") "/org/coder.org")))))))
-       ("o" "OFFICE TODO"
-	((alltodo
-	  ""
-	  ((org-agenda-sorting-strategy '(todo-state-down))
-	   (org-agenda-files file)))))
 ;;; 1 - show what has to be done today(scheduled) followed by
 ;;; 2 - unscheduled tasks, followed by
 ;;; 3 - future scheduled tasks
 ;;;   - TODO - scheduling settings should be applied to dead line also
-       ,(my-custom-agenda-layout "w" (list (concat (getenv "HOME") "/org/office.org")))
-       ,(my-custom-agenda-layout "c" (list (concat (getenv "HOME") "/org/coder.org")))
-))
+  `(,key "DAY AGENDA"
+	 ((agenda "" ((org-agenda-ndays 1)
+		      (org-agenda-files (list ,file))))
+	  (todo "" ((org-agenda-sorting-strategy '(todo-state-down))
+		    (org-agenda-todo-ignore-scheduled 'all); already shown in agenda
+		    (org-agenda-files (list ,file))))
+	  (tags "SCHEDULED>\"<+1d>\"" ""
+		(org-agenda-files (list ,file))))))
+
+(setq org-agenda-custom-commands
+      `(,(my-custom-agenda-layout "w" (concat (getenv "HOME") "/org/office.org"))
+	,(my-custom-agenda-layout "c" (concat (getenv "HOME") "/org/coder.org"))))
 
 (global-set-key (kbd "<f11>") (lambda () (interactive) (org-agenda "" "c" )))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda "" "w" )))
