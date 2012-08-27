@@ -29,14 +29,14 @@
 (setq scroll-step 1)
 (setq x-select-enable-clipboard t) ; enable system copy work with mouse region select
 ; packages from .emacs_packages
-(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/buffer-move") load-path))
-(require 'buffer-move)
+;(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/buffer-move") load-path))
+;(require 'buffer-move)
 ; experimental bindings
 (global-set-key [(control ?\;)] 'backward-kill-word)
 ; org-mode settings
-(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/lisp") load-path))
-(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/contrib/lisp") load-path))
-(require 'org-depend)
+;(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/lisp") load-path))
+;(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/contrib/lisp") load-path))
+;(require 'org-depend)
 (setq org-directory "~/org")
 (require 'org)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode)) ;open *.org files in org-mode
