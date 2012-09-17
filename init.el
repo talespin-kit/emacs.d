@@ -5,7 +5,8 @@
 (autoload 'resume "revive" "Resume Emacs" t)
 (autoload 'wipe "revive" "Wipe Emacs" t)
 (add-hook 'kill-emacs-hook '(lambda () (save-current-configuration 1)))
- ; save when closing
+(setq x-select-enable-clipboard t) ; enable system copy work with mouse region select
+; save when closing
 (fset'yes-or-no-p 'y-or-n-p) ; "y or n" instead of "yes or no"
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups"))) ; backup files directory
 (setq inhibit-startup-screen t) ; hide the splashscreen in order for the resume to work
@@ -26,17 +27,16 @@
 (set-scroll-bar-mode nil) ; hide the scroll bar
 (tool-bar-mode nil) ; hide the tool bar
 (setq revert-without-query (list ".*")) ; TODO-give the proper list of regexp
-(setq scroll-step 1)
-(setq x-select-enable-clipboard t) ; enable system copy work with mouse region select
+(setq scroll-step 1) ; M-v and C-v navigates a full screen
 ; packages from .emacs_packages
-;(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/buffer-move") load-path))
-;(require 'buffer-move)
+(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/buffer-move") load-path))
+(require 'buffer-move)
 ; experimental bindings
 (global-set-key [(control ?\;)] 'backward-kill-word)
 ; org-mode settings
-;(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/lisp") load-path))
-;(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/contrib/lisp") load-path))
-;(require 'org-depend)
+(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/lisp") load-path))
+(setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/org-mode/contrib/lisp") load-path))
+(require 'org-depend)
 (setq org-directory "~/org")
 (require 'org)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode)) ;open *.org files in org-mode
@@ -76,14 +76,11 @@
 	       (tags-todo "-ID={.+}-blocked")
 	       (tags-todo "+blocked"))
 	      ((org-agenda-sorting-strategy '(todo-state-down))
-	       (org-agenda-files  `(,(concat (getenv "HOME") "/org/office.org")))))
-	     ("e" "Interview"
-	      ((tags-todo "CATEGORY=INTERVIEW"))
-	      ((org-agenda-files  `(,(concat (getenv "HOME") "/org/coder.org")))))))
+	       (org-agenda-files  `(,(concat (getenv "HOME") "/org/office.org")))))))
+
 
 (global-set-key (kbd "<f11>") (lambda () (interactive) (org-agenda "" "c" )))
 (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda "" "k" )))
-(global-set-key (kbd "<f10>") (lambda () (interactive) (org-agenda "" "e" )))
 ;; pomodoro
 (defun my-after-load-org () (add-to-list 'org-modules 'org-timer))
 (eval-after-load "org" '(my-after-load-org))
@@ -127,21 +124,22 @@
 
 (setq org-speed-commands-user '(("d" . my-org-depend-add)))
 ; python compilation
-;; (require 'python)
-;; (defun my-compile ()
-;;   "Use compile to run python programs"
-;;   (interactive)
-;;   (compile (concat "python " "elf_print.py ./a.out")))
-;; (setq compilation-scroll-output t)
+(require 'python)
+(defun my-compile ()
+  "Use compile to run python programs"
+  (interactive)
+  (save-buffer)
+  (compile (concat "python " (buffer-file-name))))
+(setq compilation-scroll-output t)
 
-;; (setq python-mode-hook
-;;       '(lambda()
-;; 	 (local-set-key "\C-c\C-c" 'my-compile)))
-;; ;;rope for python
-;; (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-;; (add-to-list 'interpreter-mode-alist '("python" . python-mode))
-;; (require 'pymacs)
-;; (pymacs-load "ropemacs" "rope-")
+(setq python-mode-hook
+      '(lambda()
+	 (local-set-key "\C-c\C-c" 'my-compile)))
+;;rope for python
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(require 'pymacs)
+(pymacs-load "ropemacs" "rope-")
 
 ;; cscope
 (setq load-path (cons (concat (getenv "HOME") "/.emacs_packages/cscope-15.7a/contrib/xcscope") load-path))
@@ -176,5 +174,18 @@
               (return (car file-info))))
           (cdr file-info))))
 
-; mobile org
-(setq org-mobile-directory "/media/9016-4EF8/MobileOrg")
+ (defun th-outline-regexp ()
+  "Calculate the outline regexp for the current mode."
+  (let ((comment-starter (replace-regexp-in-string
+                          "[[:space:]]+" "" comment-start)))
+    (when (string= comment-start ";")
+      (setq comment-starter ";;"))
+    (concat "^" comment-starter "\\*+")))
+
+(add-hook 'outline-minor-mode-hook
+	  'th-outline-minor-mode-init)
+
+; heading
+;;data
+;;; heading2
+;;;data2
