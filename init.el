@@ -189,3 +189,4 @@
 ;;data
 ;;; heading2
 ;;;data2
+(load (concat (getenv "HOME") "/.emacs_packages/xscheme/xscheme.el")
