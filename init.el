@@ -34,4 +34,4 @@
 ; experimental bindings
 (global-set-key [(control ?\;)] 'backward-kill-word)
 (load (concat (getenv "HOME") "/.emacs_packages/xscheme/xscheme.el"))
-
+(load (concat (getenv "HOME") "/.emacs.d/org_settings.el"))
